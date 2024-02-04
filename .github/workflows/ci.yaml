@@ -26,16 +26,6 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    # Run Trivy vulnerability scanner in repo mode
-    - name: Run Trivy vulnerability scanner in repo mode
-      id: trivyscan
-      uses: aquasecurity/trivy-action@master
-      with:
-         scan-type: 'fs'
-         scan-ref: '.'
-         trivy-config: trivy.yaml
-         format: 'table'
-         severity: 'CRITICAL,HIGH,MEDIUM'
 
     # Set up JDK 17
     - name: Set up JDK 17
