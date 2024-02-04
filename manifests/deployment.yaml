@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: employee-management
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: employee-management
+  template:
+    metadata:
+      labels:
+        app: employee-management
+    spec:
+      containers:
+      - name: employee-management
+        image: 464855863269.dkr.ecr.us-east-1.amazonaws.com/ecr_repo:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
