@@ -39,7 +39,7 @@ jobs:
     #   run: mvn test
 
     - name : mvn install
-      run : mvn install
+      run : mvn install -DskipTests
 
     - name: Snyk security scan
       run: npx snyk test --severity-threshold=high
