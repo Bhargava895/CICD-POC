@@ -5,8 +5,6 @@ name: CI-CD Workflow for java code
 # Trigger the workflow on pushes to the specified branch
 on:
   push:
-    branches:
-      - feature-pratiksha
       
 # Define permissions required for the OIDC connection
 permissions:
