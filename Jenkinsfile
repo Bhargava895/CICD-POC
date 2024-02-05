@@ -37,7 +37,7 @@ pipeline {
                     def projectName = 'employee-management'
                     def severity = 'medium'
                     def snykInstallation = 'snyk'
-                    def snykTokenId = '1ad2a73a-dfe2-495c-87f8-ee586063cf75'                   
+                    def snykTokenId = 'df66e041-0a34-4840-84ac-169c6a02f389'                   
                     def targetFile = 'pom.xml'
 
                     // Snyk security scan for Java project
