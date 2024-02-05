@@ -11,6 +11,8 @@ pipeline {
                     // Set up JDK 17
                     tool 'java'
 
+                    tool 'maven'
+
                     // Run Trivy vulnerability scanner in repo mode
                     // (Add steps as per your requirement)
 
