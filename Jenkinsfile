@@ -32,15 +32,13 @@ pipeline {
         stage('Scan') {
             steps {
                 script {
-                    // Update these values according to your Java project and Snyk configuration
                     def organization = 'cybage-poc'
                     def projectName = 'employee-management'
-                    def severity = 'medium'
+                    def severity = 'high,critical' 
                     def snykInstallation = 'snyk'
                     def snykTokenId = 'snyk-token-id'                   
                     def targetFile = 'pom.xml'
 
-                    // Snyk security scan for Java project
                     snykSecurity organization: organization,
                                  projectName: projectName,
                                  severity: severity,
