@@ -29,7 +29,6 @@ pipeline {
         }
     }
 
-    
         stage('Scan') {
             steps {
                 script {
