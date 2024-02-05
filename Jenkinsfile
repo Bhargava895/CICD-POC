@@ -25,7 +25,31 @@ pipeline {
                     // Upload code-coverage report as an artifact
                     archiveArtifacts 'target/site/jacoco/index.html'
 
-                
+    
+        stage('Scan') {
+            steps {
+                script {
+                    // Update these values according to your Java project and Snyk configuration
+                    def organization = 'cybage-poc'
+                    def projectName = 'employee-management'
+                    def severity = 'medium'
+                    def snykInstallation = 'snyk'
+                    def snykTokenId = '1ad2a73a-dfe2-495c-87f8-ee586063cf75'                   
+                    def targetFile = 'pom.xml'
+
+                    // Snyk security scan for Java project
+                    snykSecurity organization: organization,
+                                 projectName: projectName,
+                                 severity: severity,
+                                 snykInstallation: snykInstallation,
+                                 snykTokenId: snykTokenId,
+                                 targetFile: targetFile
+                }
+            }
+        }
+    }
+}
+ 
             }
         }
     }
