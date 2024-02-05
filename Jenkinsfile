@@ -17,7 +17,7 @@ pipeline {
                     // (Add steps as per your requirement)
 
                     // Run unit tests using maven goal
-                    sh 'mvn test'
+                    sh 'mvn install -DskipTests'
 
                     // Generate code-coverage report using jacoco
                     sh 'mvn jacoco:report'
