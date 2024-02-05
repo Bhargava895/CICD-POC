@@ -9,7 +9,7 @@ pipeline {
                     checkout scm
 
                     // Set up JDK 17
-                    tool 'JDK17'
+                    tool 'java'
 
                     // Run Trivy vulnerability scanner in repo mode
                     // (Add steps as per your requirement)
