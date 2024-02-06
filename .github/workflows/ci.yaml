@@ -34,12 +34,12 @@ jobs:
        distribution: 'temurin'
        java-version: '17'
 
-    # # Run unit tests using maven goal
-    # - name: Run unit test
-    #   run: mvn test
+    # Run unit tests using maven goal
+    - name: Run unit test
+      run: mvn test
 
-    - name : mvn install
-      run : mvn install -DskipTests
+    # - name : mvn install
+    #   run : mvn install -DskipTests
 
     # - name: Snyk security scan
     #   run: npx snyk test --severity-threshold=high
