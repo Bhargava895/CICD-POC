@@ -47,35 +47,35 @@ jobs:
     #       SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
 
-    # - name: Snyk security scan
-    #   run: |
-    #     severity=$(npx snyk test --severity-threshold=high --json | jq -r '.vulnerabilities[].severity' | sort | tail -n 1)
-    #     if [ "$severity" == "critical" ] || [ "$severity" == "high" ]; then
-    #       echo "Found vulnerabilities with severity: $severity. Failing the job."
-    #     exit 1
-    #     fi
+    - name: Snyk security scan
+      run: |
+        severity=$(npx snyk test --severity-threshold=high --json | jq -r '.vulnerabilities[].severity' | sort | tail -n 1)
+        if [ "$severity" == "critical" ] || [ "$severity" == "high" ]; then
+          echo "Found vulnerabilities with severity: $severity. Failing the job."
+        exit 1
+        fi
+      env:
+        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
+    # - name: Run Snyk to check for high severity vulnerabilities
+    #   id: snyk_high
+    #   uses: snyk/actions/maven@master
     #   env:
     #     SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+    #   with:
+    #     args: "--severity-threshold=high"
 
-    - name: Run Snyk to check for high severity vulnerabilities
-      id: snyk_high
-      uses: snyk/actions/maven@master
-      env:
-        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-      with:
-        args: "--severity-threshold=high"
+    # - name: Run Snyk to check for critical severity vulnerabilities
+    #   id: snyk_critical
+    #   uses: snyk/actions/maven@master
+    #   env:
+    #     SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+    #   with:
+    #     args: "--severity-threshold=critical"
 
-    - name: Run Snyk to check for critical severity vulnerabilities
-      id: snyk_critical
-      uses: snyk/actions/maven@master
-      env:
-        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-      with:
-        args: "--severity-threshold=critical"
-
-    - name: Fail if high or critical vulnerabilities found
-      if: ${{ steps.snyk_high.outputs.summary.vulnerabilities.high > 0 || steps.snyk_critical.outputs.summary.vulnerabilities.critical > 0 }}
-      run: exit 1
+    # - name: Fail if high or critical vulnerabilities found
+    #   if: ${{ steps.snyk_high.outputs.summary.vulnerabilities.high > 0 || steps.snyk_critical.outputs.summary.vulnerabilities.critical > 0 }}
+    #   run: exit 1
 
   
     # Generate code-coverage report using jacoco
