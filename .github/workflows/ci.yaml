@@ -55,6 +55,21 @@ jobs:
       env:
         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
+    - name: Snyk security scan
+      run: |
+       snyk_output=$(npx snyk test --severity-threshold=high --json)
+       echo "Snyk output:"
+       echo "$snyk_output"
+       severity=$(echo "$snyk_output" | jq -r '.vulnerabilities[].severity' | sort | tail -n 1)
+       echo "Severity found: $severity"
+       if [ "$severity" == "critical" ] || [ "$severity" == "high" ]; then
+         echo "Found vulnerabilities with severity: $severity. Failing the job."
+       exit 1
+       fi
+       env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
+
     # - name: Run Snyk to check for high severity vulnerabilities
     #   id: snyk_high
     #   uses: snyk/actions/maven@master
