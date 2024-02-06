@@ -75,16 +75,16 @@ jobs:
     #   if: ${{ steps.snyk_high.outputs.summary.vulnerabilities.high > 0 || steps.snyk_critical.outputs.summary.vulnerabilities.critical > 0 }}
     #   run: exit 1
   
-    # Generate code-coverage report using jacoco
-    - name : Get code-coverage report
-      run : mvn jacoco:report
+    # # Generate code-coverage report using jacoco
+    # - name : Get code-coverage report
+    #   run : mvn jacoco:report
       
-    # Upload code-coverage report as an artifact
-    - name: Code Coverage Report
-      uses: actions/upload-artifact@v3
-      with:
-        name: Code Coverage Reports
-        path: target/site/jacoco/index.html   # Code coverage report will be generate at 'target/site/jacoco/index.html'
+    # # Upload code-coverage report as an artifact
+    # - name: Code Coverage Report
+    #   uses: actions/upload-artifact@v3
+    #   with:
+    #     name: Code Coverage Reports
+    #     path: target/site/jacoco/index.html   # Code coverage report will be generate at 'target/site/jacoco/index.html'
     
     # # Sonarqube Scan using maven command
     # - name: SonarQube Scan
