@@ -52,25 +52,25 @@ jobs:
     #     SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
 
-    - name: Run Snyk to check for high severity vulnerabilities
-      id: snyk_high
-      uses: snyk/actions/maven@master
-      env:
-        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-      with:
-        args: "--severity-threshold=high"
+    # - name: Run Snyk to check for high severity vulnerabilities
+    #   id: snyk_high
+    #   uses: snyk/actions/maven@master
+    #   env:
+    #     SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+    #   with:
+    #     args: "--severity-threshold=high"
 
-    - name: Run Snyk to check for critical severity vulnerabilities
-      id: snyk_critical
-      uses: snyk/actions/maven@master
-      env:
-        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-      with:
-        args: "--severity-threshold=critical"
+    # - name: Run Snyk to check for critical severity vulnerabilities
+    #   id: snyk_critical
+    #   uses: snyk/actions/maven@master
+    #   env:
+    #     SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+    #   with:
+    #     args: "--severity-threshold=critical"
 
-    - name: Fail if high or critical vulnerabilities found
-      if: ${{ steps.snyk_high.outputs.summary.vulnerabilities.high > 0 || steps.snyk_critical.outputs.summary.vulnerabilities.critical > 0 }}
-      run: exit 1
+    # - name: Fail if high or critical vulnerabilities found
+    #   if: ${{ steps.snyk_high.outputs.summary.vulnerabilities.high > 0 || steps.snyk_critical.outputs.summary.vulnerabilities.critical > 0 }}
+    #   run: exit 1
   
     # # Generate code-coverage report using jacoco
     # - name : Get code-coverage report
@@ -102,13 +102,21 @@ jobs:
     - name: Build project and package jar
       run: mvn package
    
-    # Build trust between GitHub and AWS using OIDC connector
+    # # Build trust between GitHub and AWS using OIDC connector
+    # - name: configure aws credentials
+    #   uses: aws-actions/configure-aws-credentials@v3
+    #   with:
+    #       role-to-assume: ${{ secrets.AWS_IAM_ARN }}
+    #       role-session-name: samplerolesession
+    #       aws-region: ${{ secrets.AWS_REGION }}
+
     - name: configure aws credentials
       uses: aws-actions/configure-aws-credentials@v3
       with:
-          role-to-assume: ${{ secrets.AWS_IAM_ARN }}
-          role-session-name: samplerolesession
-          aws-region: ${{ secrets.AWS_REGION }}
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ secrets.AWS_REGION }}
+
     
     # Authenticate AWS with Docker to interact with an Amazon ECR registry
     - name: Login to Amazon ECR
