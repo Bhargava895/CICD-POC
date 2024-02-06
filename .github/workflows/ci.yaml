@@ -102,21 +102,14 @@ jobs:
     # Build the Docker image using Dockerfile & tag it with commit SHA, & push it to ECR repository
     - name: Build Docker Image
       run: |
-          short_sha=$(echo "${{ github.sha }}" | cut -c1-7)
-          docker build -t employee:${short_sha} .
-          docker tag employee:${short_sha} ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPO_NAME }}:${short_sha}
-   #docker build -t employee:${{ github.sha }} .
-  # docker tag employee:${{ github.sha }} ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPO_NAME }}:${{ github.sha }}
+          docker build -t employee:${{ github.sha }} .
+          docker tag employee:${{ github.sha }} ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPO_NAME }}:${{ github.sha }}
        
 
-
-
-    # # Push Docker image to Amazon ECR
-    # - name: push docker image
-    #   run:  |
-    #    short_sha=$(echo "${{ github.sha }}" | cut -c1-7)
-    #    docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPO_NAME }}:${short_sha}
-    #   #docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPO_NAME }}:${{ github.sha }}
+    # Push Docker image to Amazon ECR
+    - name: push docker image
+      run:  |
+       docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPO_NAME }}:${{ github.sha }}
 
 
   
