@@ -45,7 +45,6 @@ jobs:
     #   env:
     #       SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
-
     - name: Snyk security scan
       run: |
         severity=$(npx snyk test --severity-threshold=high --json | jq -r '.vulnerabilities[].severity' | sort | tail -n 1)
