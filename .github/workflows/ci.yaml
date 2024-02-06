@@ -76,7 +76,6 @@ jobs:
     # - name: Fail if high or critical vulnerabilities found
     #   if: ${{ steps.snyk_high.outputs.summary.vulnerabilities.high > 0 || steps.snyk_critical.outputs.summary.vulnerabilities.critical > 0 }}
     #   run: exit 1
-
   
     # Generate code-coverage report using jacoco
     - name : Get code-coverage report
