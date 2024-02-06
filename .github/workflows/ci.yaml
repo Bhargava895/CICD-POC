@@ -138,7 +138,6 @@ jobs:
           docker build -t employee:${{ github.sha }} .
           docker tag employee:${{ github.sha }} ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPO_NAME }}:${{ github.sha }}
        
-
     # Push Docker image to Amazon ECR
     - name: push docker image
       run:  |
