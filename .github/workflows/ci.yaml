@@ -59,7 +59,15 @@ jobs:
     - name: Snyk dependency scan
       run: snyk test --all-projects --maven
 
-        
+    - name: Check for Critical/High Vulnerabilities
+      run: |
+        snyk test --all-projects --severity-threshold=high --maven
+        if [ $? -eq 0 ]; then
+          echo "No critical or high vulnerabilities found."
+        else
+          echo "Critical or high vulnerabilities found. Failing the build."
+          exit 1
+        fi
 
     # - name: Snyk security scan
     #   run: |
