@@ -40,31 +40,15 @@ jobs:
     - name : mvn install
       run : mvn install -DskipTests
 
-     # Install Snyk CLI
-    - name: Install Snyk CLI
-      run: npm install -g snyk
-
-      # Authenticate Snyk CLI
-    - name: Authenticate Snyk
-      run: snyk auth ${{ secrets.SNYK_TOKEN }}
-
-      # Run Snyk vulnerability scan on Java dependencies
-    - name: Snyk scan (Open Source)
-      run: snyk test --all-projects
-
-      # Run Snyk Code to scan source code
-    - name: Snyk Code scan
-      run: snyk code test
-
-    # - name: Snyk security scan
-    #   run: |
-    #     severity=$(npx snyk test --severity-threshold=high --json | jq -r '.vulnerabilities[].severity' | sort | tail -n 1)
-    #     if [ "$severity" == "critical" ] || [ "$severity" == "high" ]; then
-    #       echo "Found vulnerabilities with severity: $severity. Failing the job."
-    #     exit 1
-    #     fi
-    #   env:
-    #     SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+    - name: Snyk security scan
+      run: |
+        severity=$(npx snyk test --severity-threshold=high --json | jq -r '.vulnerabilities[].severity' | sort | tail -n 1)
+        if [ "$severity" == "critical" ] || [ "$severity" == "high" ]; then
+          echo "Found vulnerabilities with severity: $severity. Failing the job."
+        exit 1
+        fi
+      env:
+        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
     # # Generate code-coverage report using jacoco
     # - name : Get code-coverage report
