@@ -40,6 +40,11 @@ jobs:
     - name : mvn install
       run : mvn install -DskipTests
 
+    - name: Run Snyk to check for vulnerabilities
+      uses: snyk/actions/maven-3-jdk-17@master
+      env:
+        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
     - name: Snyk security scan
       run: |
         severity=$(npx snyk test --severity-threshold=high --json | jq -r '.vulnerabilities[].severity' | sort | tail -n 1)
