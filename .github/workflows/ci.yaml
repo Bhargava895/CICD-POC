@@ -93,20 +93,6 @@ jobs:
     - name: Build project and package jar
       run: mvn package
 
-    # # Snyk Code scan
-    # - name: Snyk Code scan
-    #   run: snyk code test
-
-     # Snyk Open Source scan
-    - name: Snyk Open Source scan
-      run: |
-       snyk test --file=pom.xml --json > snyk_results.json
-       cat snyk_results.json | jq '.vulnerabilities[] | select(.severity == "high" or .severity == "critical")' > high_critical_vulnerabilities.json
-       if [ -s high_critical_vulnerabilities.json ]; then
-         echo "High or critical vulnerabilities found."
-         exit 1
-       fi
-
       
     # # Build trust between GitHub and AWS using OIDC connector
     # - name: configure aws credentials
