@@ -50,15 +50,28 @@ jobs:
     #   run: snyk code test
 
 
-    - name: Snyk security scan
+    # - name: Snyk security scan
+    #   run: |
+    #     severity=$(npx snyk test --severity-threshold=high --json | jq -r '.vulnerabilities[].severity' | sort | tail -n 1)
+    #     if [ "$severity" == "critical" ] || [ "$severity" == "high" ]; then
+    #       echo "Found vulnerabilities with severity: $severity. Failing the job."
+    #     exit 1
+    #     fi
+    #   env:
+    #     SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
+    # Snyk Open Source scan
+    - name: Snyk Open Source scan
       run: |
-        severity=$(npx snyk test --severity-threshold=high --json | jq -r '.vulnerabilities[].severity' | sort | tail -n 1)
-        if [ "$severity" == "critical" ] || [ "$severity" == "high" ]; then
-          echo "Found vulnerabilities with severity: $severity. Failing the job."
-        exit 1
+        snyk test --file=pom.xml --json > snyk_results.json
+        cat snyk_results.json | jq '.vulnerabilities[] | select(.severity == "high" or .severity == "critical")' > high_critical_vulnerabilities.json
+        if [ -s high_critical_vulnerabilities.json ]; then
+          echo "High or critical vulnerabilities found:"
+          cat high_critical_vulnerabilities.json
+          exit 1
+        else
+          echo "No high or critical vulnerabilities found."
         fi
-      env:
-        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
     # # Generate code-coverage report using jacoco
     # - name : Get code-coverage report
