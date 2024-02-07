@@ -148,15 +148,38 @@ jobs:
     - name: push docker image
       run:  |
        docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPO_NAME }}:${{ github.sha }}
+       docker pull ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com:${{ github.sha }}
 
+     # Scan the container image with Snyk
+    - name: Snyk Container Scan
+      run: |
+          docker save ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com:${{ github.sha }} | snyk container test --file=-
 
-    - name: Run Snyk to check Docker images for vulnerabilities
-      uses: snyk/actions/docker@master
-      env:
-        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-      with:
-        image: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com:${{ github.sha }}
-        args: --severity-threshold=high
+    - name: Check Scan Results
+      run: |
+        snyk test --json > snyk_results.json
+    
+         if [ -f snyk_results.json ]; then
+           if grep -q '"vulnerabilities":[]' snyk_results.json; then
+             echo "No vulnerabilities found."
+           else
+              echo "Vulnerabilities found:"
+              cat snyk_results.json
+              exit 1
+           fi
+         else
+          echo "Snyk test failed or produced no output."
+          exit 1
+         fi
+
+    
+    # - name: Run Snyk to check Docker images for vulnerabilities
+    #   uses: snyk/actions/docker@master
+    #   env:
+    #     SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+    #   with:
+    #     image: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com:${{ github.sha }}
+    #     args: --severity-threshold=high
 
     # - name: Run Snyk to check Kubernetes manifest file for issues
     #   uses: snyk/actions/iac@master
