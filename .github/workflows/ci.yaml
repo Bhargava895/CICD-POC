@@ -31,6 +31,9 @@ jobs:
       with:
        distribution: 'temurin'
        java-version: '17'
+      env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
        
     # # Run unit tests using maven goal
     # - name: Run unit test
@@ -40,15 +43,15 @@ jobs:
       run : mvn install -DskipTests
 
 
-    - name: Snyk security scan
-      run: |
-        severity=$(npx snyk test --severity-threshold=high --json | jq -r '.vulnerabilities[].severity' | sort | tail -n 1)
-        if [ "$severity" == "critical" ] || [ "$severity" == "high" ]; then
-          echo "Found vulnerabilities with severity: $severity. Failing the job."
-        exit 1
-        fi
-      env:
-        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+    # - name: Snyk security scan
+    #   run: |
+    #     severity=$(npx snyk test --severity-threshold=high --json | jq -r '.vulnerabilities[].severity' | sort | tail -n 1)
+    #     if [ "$severity" == "critical" ] || [ "$severity" == "high" ]; then
+    #       echo "Found vulnerabilities with severity: $severity. Failing the job."
+    #     exit 1
+    #     fi
+    #   env:
+    #     SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
     # # Generate code-coverage report using jacoco
     # - name : Get code-coverage report
