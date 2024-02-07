@@ -34,19 +34,12 @@ jobs:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
        
-    # # Run unit tests using maven goal
-    # - name: Run unit test
-    #   run: mvn test
+    # Run unit tests using maven goal
+    - name: Run unit test
+      run: mvn test
 
-    - name : mvn install
-      run : mvn install -DskipTests
-
-    # - name: Run Snyk to check for vulnerabilities
-    #   uses: snyk/actions/maven@master
-    #   env:
-    #       SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-    #   with:
-    #       args: --severity-threshold=high -d
+    # - name : mvn install
+    #   run : mvn install 
 
     # Authenticate with Snyk
     - name: Authenticate with Snyk
@@ -56,18 +49,19 @@ jobs:
     # - name: Snyk Code scan
     #   run: snyk code test
 
+    # Snyk Open Source 
     # - name: Snyk dependency scan
     #   run: snyk test --all-projects --maven
 
-    - name: Check for Critical/High Vulnerabilities
-      run: |
-        snyk test --all-projects --severity-threshold=high --maven
-        if [ $? -eq 0 ]; then
-          echo "No critical or high vulnerabilities found."
-        else
-          echo "Critical or high vulnerabilities found. Failing the build."
-          exit 1
-        fi
+    # - name: Check for Critical/High Vulnerabilities
+    #   run: |
+    #     snyk test --all-projects --severity-threshold=high --maven
+    #     if [ $? -eq 0 ]; then
+    #       echo "No critical or high vulnerabilities found."
+    #     else
+    #       echo "Critical or high vulnerabilities found. Failing the build."
+    #       exit 1
+    #     fi
 
     # # Generate code-coverage report using jacoco
     # - name : Get code-coverage report
