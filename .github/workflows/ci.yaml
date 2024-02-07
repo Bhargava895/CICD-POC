@@ -56,6 +56,10 @@ jobs:
     # - name: Snyk Code scan
     #   run: snyk code test
 
+    - name: Snyk dependency scan
+      run: snyk test --all-projects --maven
+
+        
 
     # - name: Snyk security scan
     #   run: |
