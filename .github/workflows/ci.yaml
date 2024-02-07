@@ -60,18 +60,14 @@ jobs:
     #   env:
     #     SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
-    # Snyk Open Source scan
     - name: Snyk Open Source scan
       run: |
-        snyk test --file=pom.xml --json > snyk_results.json
-        cat snyk_results.json | jq '.vulnerabilities[] | select(.severity == "high" or .severity == "critical")' > high_critical_vulnerabilities.json
-        if [ -s high_critical_vulnerabilities.json ]; then
-          echo "High or critical vulnerabilities found:"
-          cat high_critical_vulnerabilities.json
+       snyk test --file=pom.xml --json > snyk_results.json
+       cat snyk_results.json | jq '.vulnerabilities[] | select(.severity == "high" or .severity == "critical")' > high_critical_vulnerabilities.json
+       if [ -s high_critical_vulnerabilities.json ]; then
+          echo "High or critical vulnerabilities found."
           exit 1
-        else
-          echo "No high or critical vulnerabilities found."
-        fi
+       fi
 
     # # Generate code-coverage report using jacoco
     # - name : Get code-coverage report
