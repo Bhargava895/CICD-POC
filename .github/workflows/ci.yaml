@@ -46,7 +46,7 @@ jobs:
       env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
       with:
-          args: --severity-threshold=high
+          args: --severity-threshold=high -d
 
     # Authenticate with Snyk
     - name: Authenticate with Snyk
