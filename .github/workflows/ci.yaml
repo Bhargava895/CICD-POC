@@ -164,6 +164,14 @@ jobs:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
       with:
           file: ./manifests/service.yaml
+
+    - name: Run Snyk to check Kubernetes manifest file for issues (Deployment.yaml)
+      uses: snyk/actions/iac@master
+      env:
+         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+      with:
+        file: ./manifests/deployment.yaml
+
   
       
       
