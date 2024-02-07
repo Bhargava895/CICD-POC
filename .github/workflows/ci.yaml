@@ -51,6 +51,10 @@ jobs:
     #   env:
     #     SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
+    - name: Run Snyk to check for vulnerabilities
+      uses: snyk/actions/maven-3-jdk-17@master
+      env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
     # - name: Run Snyk to check for high severity vulnerabilities
     #   id: snyk_high
@@ -134,7 +138,7 @@ jobs:
        docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPO_NAME }}:${{ github.sha }}
 
     - name: Run Snyk to check Docker images for vulnerabilities
-      uses: snyk/actions/docker@master
+      uses: snyk/actions/docker@v2
       env:
         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
       with:
