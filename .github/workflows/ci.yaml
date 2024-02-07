@@ -41,12 +41,12 @@ jobs:
     - name : mvn install
       run : mvn install -DskipTests
 
-    - name: Run Snyk to check for vulnerabilities
-      uses: snyk/actions/maven@master
-      env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-      with:
-          args: --severity-threshold=high -d
+    # - name: Run Snyk to check for vulnerabilities
+    #   uses: snyk/actions/maven@master
+    #   env:
+    #       SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+    #   with:
+    #       args: --severity-threshold=high -d
 
     # Authenticate with Snyk
     - name: Authenticate with Snyk
