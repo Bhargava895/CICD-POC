@@ -111,6 +111,7 @@ jobs:
       run:  |
        docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPO_NAME }}:${{ github.sha }}
 
+
     - name: Run Snyk to check Docker images for vulnerabilities
       uses: snyk/actions/docker@master
       env:
