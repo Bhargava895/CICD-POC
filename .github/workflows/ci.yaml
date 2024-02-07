@@ -42,6 +42,10 @@ jobs:
     - name : mvn install
       run : mvn install -DskipTests
 
+    # Authenticate with Snyk
+    - name: Authenticate with Snyk
+      run: snyk auth ${{ secrets.SNYK_TOKEN }}
+
     - name: Snyk Code test
       run: snyk code test
 
