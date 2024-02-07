@@ -19,6 +19,8 @@ jobs:
     env:
       DB_USERNAME: ${{ secrets.DB_USERNAME }}
       DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+      JAVA_HOME: /usr/lib/jvm/temurin-17-jdk  # Add this line to set up JAVA_HOME
+
   
     # Define the steps to be executed in the job
     steps:
@@ -32,6 +34,10 @@ jobs:
       with:
        distribution: 'temurin'
        java-version: '17'
+
+     # Set up JAVA_HOME environment variable
+    - name: Set up JAVA_HOME
+      run: echo "JAVA_HOME=${{ env.JAVA_HOME }}" >> $GITHUB_ENV
 
     # # Run unit tests using maven goal
     # - name: Run unit test
