@@ -45,14 +45,15 @@ jobs:
     - name: Authenticate with Snyk
       run: snyk auth ${{ secrets.SNYK_TOKEN }}
 
-    # Snyk Code test for critical vulnerabilities
-    - name: Snyk Code test (Critical)
-      run: snyk code test --severity-threshold=critical
+     # Snyk Code scan
+    - name: Snyk Code scan
+      run: snyk code test
 
-     # Snyk Code test for high vulnerabilities
-    - name: Snyk Code test (High)
-      run: snyk code test --severity-threshold=high
+    # Filter for critical vulnerabilities
+    - name: Snyk Test (Critical)
+      run: snyk test --severity=high,critical
 
+     
 
     # - name: Snyk security scan
     #   run: |
