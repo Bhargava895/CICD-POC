@@ -40,6 +40,22 @@ jobs:
     - name : mvn install
       run : mvn install -DskipTests
 
+     # Install Snyk CLI
+    - name: Install Snyk CLI
+      run: npm install -g snyk
+
+      # Authenticate Snyk CLI
+    - name: Authenticate Snyk
+      run: snyk auth ${{ secrets.SNYK_TOKEN }}
+
+      # Run Snyk vulnerability scan on Java dependencies
+    - name: Snyk scan (Open Source)
+      run: snyk test --all-projects
+
+      # Run Snyk Code to scan source code
+    - name: Snyk Code scan
+      run: snyk code test
+
     # - name: Snyk security scan
     #   run: |
     #     severity=$(npx snyk test --severity-threshold=high --json | jq -r '.vulnerabilities[].severity' | sort | tail -n 1)
@@ -111,13 +127,13 @@ jobs:
        docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPO_NAME }}:${{ github.sha }}
 
 
-    - name: Run Snyk to check Docker images for vulnerabilities
-      uses: snyk/actions/docker@master
-      env:
-        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-      with:
-        image: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com:${{ github.sha }}
-        args: --severity-threshold=high
+    # - name: Run Snyk to check Docker images for vulnerabilities
+    #   uses: snyk/actions/docker@master
+    #   env:
+    #     SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+    #   with:
+    #     image: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com:${{ github.sha }}
+    #     args: --severity-threshold=high
 
   
       
