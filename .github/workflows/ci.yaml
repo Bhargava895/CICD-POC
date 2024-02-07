@@ -84,7 +84,15 @@ jobs:
     # Once we build the package using maven as build tool the artifact generated is in jar format and store under target directory
     - name: Build project and package jar
       run: mvn package
-   
+
+    # Snyk Code scan
+    - name: Snyk Code scan
+      run: snyk code test
+
+      # Snyk Open Source scan
+    - name: Snyk Open Source scan
+      run: snyk test --file=pom.xml
+      
     # # Build trust between GitHub and AWS using OIDC connector
     # - name: configure aws credentials
     #   uses: aws-actions/configure-aws-credentials@v3
