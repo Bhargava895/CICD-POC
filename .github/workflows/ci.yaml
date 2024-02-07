@@ -15,10 +15,6 @@ jobs:
   # CI job
   build:
     runs-on: ubuntu-latest
-  
-    env:
-      DB_USERNAME: ${{ secrets.DB_USERNAME }}
-      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
 
   
     # Define the steps to be executed in the job
@@ -27,13 +23,9 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
-
-    - name: Run Snyk to check for vulnerabilities
-      uses: snyk/actions/maven@master
-      env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-
-    # Set up JDK 17
+    - name: Set up Snyk CLI to check for security issues
+      uses: snyk/actions/setup@master
+      
     - name: Set up JDK 17
       uses: actions/setup-java@v4
       with:
