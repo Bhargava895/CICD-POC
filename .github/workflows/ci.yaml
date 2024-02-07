@@ -40,15 +40,15 @@ jobs:
     - name : mvn install
       run : mvn install -DskipTests
 
-    - name: Snyk security scan
-      run: |
-        severity=$(npx snyk test --severity-threshold=high --json | jq -r '.vulnerabilities[].severity' | sort | tail -n 1)
-        if [ "$severity" == "critical" ] || [ "$severity" == "high" ]; then
-          echo "Found vulnerabilities with severity: $severity. Failing the job."
-        exit 1
-        fi
-      env:
-        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+    # - name: Snyk security scan
+    #   run: |
+    #     severity=$(npx snyk test --severity-threshold=high --json | jq -r '.vulnerabilities[].severity' | sort | tail -n 1)
+    #     if [ "$severity" == "critical" ] || [ "$severity" == "high" ]; then
+    #       echo "Found vulnerabilities with severity: $severity. Failing the job."
+    #     exit 1
+    #     fi
+    #   env:
+    #     SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
     # # Generate code-coverage report using jacoco
     # - name : Get code-coverage report
@@ -111,13 +111,13 @@ jobs:
       run:  |
        docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPO_NAME }}:${{ github.sha }}
 
-    # - name: Run Snyk to check Docker images for vulnerabilities
-    #   uses: snyk/actions/docker@v2
-    #   env:
-    #     SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-    #   with:
-    #     image: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com:${{ github.sha }}
-    #     args: --severity-threshold=high
+    - name: Run Snyk to check Docker images for vulnerabilities
+      uses: snyk/actions/docker@v2
+      env:
+        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+      with:
+        image: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com:${{ github.sha }}
+        args: --severity-threshold=high
 
   
       
