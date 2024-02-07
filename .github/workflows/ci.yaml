@@ -34,6 +34,9 @@ jobs:
       with:
        distribution: 'temurin'
        java-version: '17'
+       
+    - name: Check JAVA_HOME
+      run: echo "JAVA_HOME is $JAVA_HOME"
 
      # Set up JAVA_HOME environment variable
     - name: Set up JAVA_HOME
