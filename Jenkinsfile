@@ -18,35 +18,35 @@ pipeline {
                 }
             }
         }
-         stage('Snyk Security') {
-             steps {
-                snykSecurity organization: 'cybage-poc',
-                             projectName: 'employee-management',
-                             snykTokenId: 'snyk-token-id' // Reference the created credential ID
-                        // Other settings if needed
-        }
-    }
+    //      stage('Snyk Security') {
+    //          steps {
+    //             snykSecurity organization: 'cybage-poc',
+    //                          projectName: 'employee-management',
+    //                          snykTokenId: 'snyk-token-id' // Reference the created credential ID
+    //                     // Other settings if needed
+    //     }
+    // }
     
 
-        // stage('Scan') {
-        //     steps {
-        //         script {
-        //             def organization = 'cybage-poc'
-        //             def projectName = 'employee-management'
-        //             def severity = 'high,critical' 
-        //             def snykInstallation = 'snyk'
-        //             def snykTokenId = 'snyk-token-id'                   
-        //             def targetFile = 'pom.xml'
+        stage('Scan') {
+            steps {
+                script {
+                    def organization = 'cybage-poc'
+                    def projectName = 'employee-management'
+                    def severity = 'high,critical' 
+                    def snykInstallation = 'snyk'
+                    def snykTokenId = 'snyk-token-id'                   
+                    def targetFile = 'pom.xml'
 
-        //             snykSecurity organization: organization,
-        //                          projectName: projectName,
-        //                          severity: severity,
-        //                          snykInstallation: snykInstallation,
-        //                          snykTokenId: snykTokenId,
-        //                          targetFile: targetFile
-        //         }
-        //     }
-        // }
+                    snykSecurity organization: organization,
+                                 projectName: projectName,
+                                 severity: severity,
+                                 snykInstallation: snykInstallation,
+                                 snykTokenId: snykTokenId,
+                                 targetFile: targetFile
+                }
+            }
+        }
        
     }
 }
