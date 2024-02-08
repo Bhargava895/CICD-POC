@@ -14,11 +14,18 @@ pipeline {
                     tool 'maven'
 
                     // Run unit tests using maven goal
-                   // sh 'mvn install -DskipTests'
-                    sh 'mvn clean install snyk:test --all-projects'
+                    sh 'mvn install -DskipTests'
                 }
             }
         }
+         stage('Snyk Security') {
+             steps {
+                snykSecurity organization: 'cybage-poc',
+                        project: 'employee-management',
+                        credentialsId: 'snyk-token-id' // Reference the created credential ID
+                        // Other settings if needed
+        }
+    }
     
 
         // stage('Scan') {
