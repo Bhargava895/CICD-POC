@@ -22,35 +22,27 @@ pipeline {
                 }
             }
         }
+    
 
-        stage('Security Scan') {
+        stage('Scan') {
             steps {
                 script {
-                    sh "SNYK_TOKEN=${env.SNYK_TOKEN} snyk test --all-projects --file=pom.xml"
+                    def organization = 'cybage-poc'
+                    def projectName = 'employee-management'
+                    def severity = 'high,critical' 
+                    def snykInstallation = 'snyk'
+                    def snykTokenId = 'snyk-token-id'                   
+                    def targetFile = 'pom.xml'
+
+                    snykSecurity organization: organization,
+                                 projectName: projectName,
+                                 severity: severity,
+                                 snykInstallation: snykInstallation,
+                                 snykTokenId: snykTokenId,
+                                 targetFile: targetFile
                 }
             }
         }
-    
-
-        // stage('Scan') {
-        //     steps {
-        //         script {
-        //             def organization = 'cybage-poc'
-        //             def projectName = 'employee-management'
-        //             def severity = 'high,critical' 
-        //             def snykInstallation = 'snyk'
-        //             def snykTokenId = 'snyk-token-id'                   
-        //             def targetFile = 'pom.xml'
-
-        //             snykSecurity organization: organization,
-        //                          projectName: projectName,
-        //                          severity: severity,
-        //                          snykInstallation: snykInstallation,
-        //                          snykTokenId: snykTokenId,
-        //                          targetFile: targetFile
-        //         }
-        //     }
-        // }
     }
 }
  
