@@ -131,13 +131,13 @@ jobs:
     #       docker save ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com:${{ github.sha }} | snyk container test --file=-
 
     
-    # - name: Run Snyk to check Docker images for vulnerabilities
-    #   uses: snyk/actions/docker@master
-    #   env:
-    #     SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-    #   with:
-    #     image: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com:${{ github.sha }}
-    #     args: --severity-threshold=high
+    - name: Run Snyk to check Docker images for vulnerabilities
+      uses: snyk/actions/docker@master
+      env:
+        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+      with:
+        image: ecr_repo
+        args: --severity-threshold=high
 
     # - name: Run Snyk to check Kubernetes manifest file for issues
     #   uses: snyk/actions/iac@master
