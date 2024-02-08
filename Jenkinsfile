@@ -21,8 +21,8 @@ pipeline {
          stage('Snyk Security') {
              steps {
                 snykSecurity organization: 'cybage-poc',
-                        project: 'employee-management',
-                        credentialsId: 'snyk-token-id' // Reference the created credential ID
+                             projectName: 'employee-management',
+                             snykTokenId: 'snyk-token-id' // Reference the created credential ID
                         // Other settings if needed
         }
     }
