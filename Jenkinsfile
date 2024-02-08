@@ -13,9 +13,6 @@ pipeline {
                     
                     tool 'maven'
 
-                    // Run Trivy vulnerability scanner in repo mode
-                    // (Add steps as per your requirement)
-
                     // Run unit tests using maven goal
                     sh 'mvn install -DskipTests'
 
