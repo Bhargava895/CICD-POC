@@ -34,7 +34,8 @@ pipeline {
                 sh 'chmod +x ./snyk'
 
                 // Move Snyk CLI to /usr/local/bin
-                sh 'sudo mv ./snyk /usr/local/bin/'
+                sh 'echo "password" | sudo -S mv ./snyk /usr/local/bin/'
+                     
                 // Authenticate with Snyk
                 sh "snyk auth ${snykTokenId}"
 
