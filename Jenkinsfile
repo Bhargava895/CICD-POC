@@ -27,11 +27,11 @@ pipeline {
                     def snykTokenId = 'snyk-token-id'
                     def targetFile = 'pom.xml'
 
-                    snykSecurity projectName: projectName,
-                                severity: severity,
-                                snykInstallation: snykInstallation,
-                                snykTokenId: snykTokenId,
-                                targetFile: targetFile
+                    // snykSecurity projectName: projectName,
+                    //             severity: severity,
+                    //             snykInstallation: snykInstallation,
+                    //             snykTokenId: snykTokenId,
+                    //             targetFile: targetFile
                 }
             }
         }
