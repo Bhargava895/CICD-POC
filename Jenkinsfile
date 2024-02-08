@@ -37,6 +37,13 @@ pipeline {
         }
          stage('Snyk Security Scan') {
             steps {
+                script {
+                   def projectName = 'employee-management'
+                   def severity = 'high,critical' 
+                   def snykInstallation = 'snyk'
+                   def snykTokenId = 'snyk-token-id'
+                   def targetFile = 'pom.xml'
+
                 // Set up Snyk CLI to check for security issues
                 sh "curl -sL https://raw.githubusercontent.com/snyk/snyk/master/tools/setup.sh | bash -s -- -t ${snykTokenId}"
 
@@ -52,6 +59,7 @@ pipeline {
                 // Run Snyk Infrastructure as Code (IaC) scan (if applicable)
                 sh 'snyk iac test file=./manifests/deployment.yaml' // Replace with file path
             }
+          }
         }
     }
 }
