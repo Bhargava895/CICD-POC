@@ -4,7 +4,6 @@ pipeline {
     environment{
         SNYK_TOKEN = credentials('snyk-token-id')
     }
-
     stages {
         stage('Build') {
             steps {
