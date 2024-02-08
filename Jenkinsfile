@@ -21,7 +21,6 @@ pipeline {
 
                     // Upload code-coverage report as an artifact
                     archiveArtifacts 'target/site/jacoco/index.html'
-   
             }
         }
     }
