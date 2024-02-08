@@ -1,9 +1,10 @@
 pipeline {
     agent any
 
-    environment{
+    environment {
         SNYK_TOKEN = credentials('snyk-token-id')
     }
+
     stages {
         stage('Build') {
             steps {
@@ -18,18 +19,20 @@ pipeline {
 
                     // Run unit tests using maven goal
                     sh 'mvn install -DskipTests'
+                }
+            }
+        }
+
+        stage('Security Scan') {
+            steps {
+                script {
+                    sh "SNYK_TOKEN=${env.SNYK_TOKEN} snyk test --all-projects --file=pom.xml"
+                }
             }
         }
     }
-         stage('Security Scan') {
-             steps {
-                 script {
-                     withCredentials([string(credentialsId: 'snyk-token-id', variable: 'SNYK_TOKEN')]){
-                         sh "snyk test --all-projects --file=pom.xml --token=$SNYK_TOKEN"
-         }
-    }
 }
-}
+
         // stage('Scan') {
         //     steps {
         //         script {
