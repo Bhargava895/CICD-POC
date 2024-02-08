@@ -35,5 +35,23 @@ pipeline {
                 }
             }
         }
+         stage('Snyk Security Scan') {
+            steps {
+                // Set up Snyk CLI to check for security issues
+                sh "curl -sL https://raw.githubusercontent.com/snyk/snyk/master/tools/setup.sh | bash -s -- -t ${snykTokenId}"
+
+                // Authenticate with Snyk
+                sh "snyk auth ${snykTokenId}"
+
+                // Run Snyk Code scan (optionally filter severity and scope)
+                sh 'snyk code test --severity-threshold=high --all-projects --maven'
+
+                // Run Snyk Container Scan (if applicable)
+                // sh 'snyk container test image=${REGISTRY}/${IMAGE_NAME}:${BUILD_SHA}' // Replace with image details
+
+                // Run Snyk Infrastructure as Code (IaC) scan (if applicable)
+                sh 'snyk iac test file=./manifests/deployment.yaml' // Replace with file path
+            }
+        }
     }
 }
