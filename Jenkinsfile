@@ -30,8 +30,7 @@ pipeline {
                 }
             }
         }
-    }
-}
+    
 
         // stage('Scan') {
         //     steps {
