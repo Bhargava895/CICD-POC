@@ -116,13 +116,13 @@ jobs:
     # Build the Docker image using Dockerfile & tag it with commit SHA, & push it to ECR repository
     - name: Build Docker Image
       run: |
-          docker build -t employee:${{ github.sha }} .
-          docker tag employee:${{ github.sha }} ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPO_NAME }}:${{ github.sha }}
+          docker build -t employee:latest .
+          docker tag employee:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPO_NAME }}:latest
        
     # Push Docker image to Amazon ECR
     - name: push docker image
       run:  |
-       docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPO_NAME }}:${{ github.sha }}
+       docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPO_NAME }}:latest
     # docker pull ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPO_NAME }}:${{ github.sha }}
 
     #  # Scan the container image with Snyk
@@ -137,7 +137,7 @@ jobs:
         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
       with:
         image: ecr_repo
-        args: --severity-threshold=high
+        
 
     # - name: Run Snyk to check Kubernetes manifest file for issues
     #   uses: snyk/actions/iac@master
