@@ -16,11 +16,6 @@ pipeline {
                     // Run unit tests using maven goal
                     sh 'mvn install -DskipTests'
 
-                    // Generate code-coverage report using jacoco
-                    sh 'mvn jacoco:report'
-
-                    // Upload code-coverage report as an artifact
-                    archiveArtifacts 'target/site/jacoco/index.html'
             }
         }
     }
