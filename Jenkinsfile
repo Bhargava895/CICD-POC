@@ -17,7 +17,7 @@ pipeline {
                     tool 'maven'
 
                     // Run unit tests using maven goal
-                    sh 'mvn install -DskipTests'
+                    sh 'mvn install'
                 }
             }
         }
