@@ -8,6 +8,7 @@ pipeline {
                     // Checkout code
                     checkout scm
 
+                    
                     // Set up JDK 17
                     tool 'java'
                     tool 'maven'
