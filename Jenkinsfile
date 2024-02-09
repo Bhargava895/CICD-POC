@@ -27,7 +27,7 @@ pipeline {
                     sh "snyk auth $SNYK_TOKEN" // Authenticate with Snyk using the stored token
                     // sh "snyk code test" // Run Snyk test for vulnerabilities
                     // sh "snyk test --all-projects --maven"
-                    sh "snyk test ./manifests/service.yaml ./manifests/deployment.yaml" // Run Snyk test for vulnerabilities
+                    sh "snyk test --file=./manifests/service.yaml --file=./manifests/deployment.yaml" // Run Snyk test for vulnerabilities
                 }
             }
         }
