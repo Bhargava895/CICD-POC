@@ -17,7 +17,7 @@ pipeline {
                     tool 'maven'
 
                     // Run unit tests using maven goal
-                    sh 'mvn install -DskipTests'
+                    sh 'mvn test'
                 }
             }
         }
@@ -25,7 +25,7 @@ pipeline {
             steps {
                 withCredentials([string(credentialsId: 'snyk-token-id', variable: 'SNYK_TOKEN')]) {
                     sh "snyk auth $SNYK_TOKEN" // Authenticate with Snyk using the stored token
-                    sh "snyk test --all-projects" // Run Snyk test for vulnerabilities
+                    sh "snyk code test" // Run Snyk test for vulnerabilities
                 }
             }
         }
