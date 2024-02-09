@@ -18,6 +18,9 @@ pipeline {
 
                     // Run unit tests using maven goal
                     sh 'mvn install'
+
+                    // Build Docker image
+                    sh 'docker build -t myapp .'
                 }
             }
         }
@@ -27,7 +30,9 @@ pipeline {
                     sh "snyk auth $SNYK_TOKEN" // Authenticate with Snyk using the stored token
                     // sh "snyk code test" // Run Snyk test for vulnerabilities
                    // sh "snyk test --all-projects --maven"
-                    sh "snyk test --file=./manifests/service.yaml --package-manager=kubectl" // Run Snyk test for vulnerabilities
+                    
+                    sh 'snyk test myapp' // Run Snyk test for vulnerabilities on the Docker image
+
                 }
             }
         }
