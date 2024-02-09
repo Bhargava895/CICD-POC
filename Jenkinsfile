@@ -22,10 +22,11 @@ pipeline {
                 }
             }
         }
-        stage('Snyk Scan') {
+       stage('Snyk Scan') {
             steps {
                 withCredentials([string(credentialsId: 'snyk-token-id', variable: 'SNYK_TOKEN')]) {
-                    sh 'snyk test --all-projects --token=$SNYK_TOKEN' // Run Snyk test for vulnerabilities
+                    sh 'snyk auth $SNYK_TOKEN' // Authenticate with Snyk using the stored token
+                    sh 'snyk test --all-projects' // Run Snyk test for vulnerabilities
                 }
             }
         }
