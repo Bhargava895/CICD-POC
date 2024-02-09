@@ -5,7 +5,6 @@ pipeline {
         SNYK_TOKEN = credentials('snyk-token-id')
     }
 
-
     stages {
         stage('Build') {
             steps {
@@ -25,10 +24,12 @@ pipeline {
         }
         stage('Snyk Scan') {
             steps {
-                sh 'snyk auth $SNYK_TOKEN' // Authenticate with Snyk using the stored token
-                sh 'snyk test --all-projects' // Run Snyk test for vulnerabilities
+                withCredentials([string(credentialsId: 'snyk-token-id', variable: 'SNYK_TOKEN')]) {
+                    sh 'snyk test --all-projects --token=$SNYK_TOKEN' // Run Snyk test for vulnerabilities
+                }
             }
         }
+
     
         // stage('Scan') {
         //     steps {
