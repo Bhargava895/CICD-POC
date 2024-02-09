@@ -16,9 +16,9 @@ jobs:
       
       - snyk/install
       
-      - run:
-          name: Grant executable permissions to mvnw
-          command: chmod +x mvnw
+      # - run:
+      #     name: Grant executable permissions to mvnw
+      #     command: chmod +x mvnw
           
       # - run:
       #     name: Run code scan
