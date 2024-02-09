@@ -24,17 +24,30 @@ pipeline {
                 }
             }
         }
-         stage('Snyk Scan') {
-            steps {
-                withCredentials([string(credentialsId: 'snyk-token-id', variable: 'SNYK_TOKEN')]) {
-                    sh "snyk auth $SNYK_TOKEN" // Authenticate with Snyk using the stored token
-                    // sh "snyk code test" // Run Snyk test for vulnerabilities in source code
-                   // sh "snyk test --all-projects --maven" //Run snyk test for vulnerabilites in pom.xml
+        //  stage('Snyk Scan') {
+        //     steps {
+        //         withCredentials([string(credentialsId: 'snyk-token-id', variable: 'SNYK_TOKEN')]) {
+        //             sh "snyk auth $SNYK_TOKEN" // Authenticate with Snyk using the stored token
+        //             // sh "snyk code test" // Run Snyk test for vulnerabilities in source code
+        //            // sh "snyk test --all-projects --maven" //Run snyk test for vulnerabilites in pom.xml
                     
-                    // sh 'snyk test myapp' // Run Snyk test for vulnerabilities on the Docker image
-                    sh "snyk iac test ./manifests/*.yaml"
+        //             // sh 'snyk test myapp' // Run Snyk test for vulnerabilities on the Docker image
+        //             sh "snyk iac test ./manifests/*.yaml"
 
 
+        //         }
+        //     }
+        // }
+
+         stage('Snyk IaC Scan') {
+            steps {
+                script {
+                    def scanOutput = sh(script: "snyk iac test ./manifests/*.yaml", returnStdout: true).trim()
+                    if (scanOutput.contains("High") || scanOutput.contains("Critical")) {
+                        error "High or critical vulnerabilities found:\n${scanOutput}"
+                    } else {
+                        echo "No high or critical vulnerabilities found"
+                    }
                 }
             }
         }
