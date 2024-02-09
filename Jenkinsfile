@@ -25,8 +25,8 @@ pipeline {
             steps {
                 withCredentials([string(credentialsId: 'snyk-token-id', variable: 'SNYK_TOKEN')]) {
                     sh "snyk auth $SNYK_TOKEN" // Authenticate with Snyk using the stored token
-                    sh "snyk code test" // Run Snyk test for vulnerabilities
-                    // sh "snyk test --all-projects --maven"
+                    // sh "snyk code test" // Run Snyk test for vulnerabilities
+                    sh "snyk test --all-projects --maven"
                 }
             }
         }
