@@ -19,6 +19,7 @@ pipeline {
                     // Run unit tests using maven goal
                     sh 'mvn install'
 
+                    
                     // Build Docker image
                     sh 'docker build -t myapp .'
                 }
