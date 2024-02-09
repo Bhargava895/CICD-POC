@@ -1,6 +1,11 @@
 pipeline {
     agent any
 
+    environment {
+        SNYK_TOKEN = credentials('snyk-token-id')
+    }
+
+
     stages {
         stage('Build') {
             steps {
@@ -18,23 +23,29 @@ pipeline {
                 }
             }
         }
-    
-        stage('Scan') {
+        stage('Snyk Scan') {
             steps {
-                script {
-                    def projectName = 'employee-management'
-                    def severity = 'high,critical' 
-                    def snykInstallation = 'snyk'
-                    def snykTokenId = 'snyk-token-id'
-                    def targetFile = 'pom.xml'
-
-                    // snykSecurity projectName: projectName,
-                    //             severity: severity,
-                    //             snykInstallation: snykInstallation,
-                    //             snykTokenId: snykTokenId,
-                    //             targetFile: targetFile
-                }
+                sh 'snyk auth $SNYK_TOKEN' // Authenticate with Snyk using the stored token
+                sh 'snyk test --all-projects' // Run Snyk test for vulnerabilities
             }
         }
+    
+        // stage('Scan') {
+        //     steps {
+        //         script {
+        //             def projectName = 'employee-management'
+        //             def severity = 'high,critical' 
+        //             def snykInstallation = 'snyk'
+        //             def snykTokenId = 'snyk-token-id'
+        //             def targetFile = 'pom.xml'
+
+        //             // snykSecurity projectName: projectName,
+        //             //             severity: severity,
+        //             //             snykInstallation: snykInstallation,
+        //             //             snykTokenId: snykTokenId,
+        //             //             targetFile: targetFile
+        //         }
+        //     }
+        // }
     }
 }
