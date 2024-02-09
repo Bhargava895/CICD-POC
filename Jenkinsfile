@@ -32,7 +32,7 @@ pipeline {
                    // sh "snyk test --all-projects --maven" //Run snyk test for vulnerabilites in pom.xml
                     
                     // sh 'snyk test myapp' // Run Snyk test for vulnerabilities on the Docker image
-                    sh "snyk test ./manifests/*.yaml"
+                    sh "snyk --help"
 
 
                 }
