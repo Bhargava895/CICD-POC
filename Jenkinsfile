@@ -3,6 +3,7 @@ pipeline {
 
     environment {
         SNYK_TOKEN = credentials('snyk-token-id')
+        SNYK_CLI_PATH = '/usr/local/bin/snyk' 
     }
 
     stages {
@@ -22,11 +23,11 @@ pipeline {
                 }
             }
         }
-       stage('Snyk Scan') {
+         stage('Snyk Scan') {
             steps {
                 withCredentials([string(credentialsId: 'snyk-token-id', variable: 'SNYK_TOKEN')]) {
-                    sh 'snyk auth $SNYK_TOKEN' // Authenticate with Snyk using the stored token
-                    sh 'snyk test --all-projects' // Run Snyk test for vulnerabilities
+                    sh "SNYK_CLI_PATH auth $SNYK_TOKEN" // Authenticate with Snyk using the stored token
+                    sh "SNYK_CLI_PATH test --all-projects" // Run Snyk test for vulnerabilities
                 }
             }
         }
