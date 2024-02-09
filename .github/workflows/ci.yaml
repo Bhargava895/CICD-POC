@@ -152,6 +152,8 @@ jobs:
     #      SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
     #   with:
     #     file: ./manifests/deployment.yaml
+    #     args: --severity-threshold=high
+
 
   
       
