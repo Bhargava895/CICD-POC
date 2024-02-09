@@ -24,19 +24,7 @@ pipeline {
                 }
             }
         }
-       stage('Snyk Open Source Scan') {
-         steps {
-            withCredentials([string(credentialsId: 'snyk-token-id', variable: 'SNYK_TOKEN')]) {
-               sh "snyk auth $SNYK_TOKEN" // Authenticate with Snyk using the stored token
-               def scanOutput = sh(script: "snyk test --all-projects --maven", returnStdout: true).trim()
-               if (scanOutput.contains("High") || scanOutput.contains("Critical")) {
-                  error "High or critical vulnerabilities found:\n${scanOutput}"
-               } else {
-                  echo "No high or critical vulnerabilities found"
-               }
-             }
-           }
-        }
+
 
          stage('Snyk Scan') {
             steps {
