@@ -64,7 +64,8 @@ jobs:
     #     fi
 
     - name: Generate SBOM report with Snyk
-      run: snyk sbom --format=cyclonedx1.4+json > bom.json
+      run: snyk sbom --format=cyclonedx1.4+json --debug > bom.json
+
 
     # # Generate code-coverage report using jacoco
     # - name : Get code-coverage report
