@@ -63,7 +63,7 @@ jobs:
     #     fi
 
     - name: Generate SBOM report with Snyk
-      run: snyk sbom --file=pom.xml --format=cyclonedx1.4+xml
+      run: snyk sbom --file=pom.xml --format=spdx2.3+json
       # run: snyk sbom --format=cyclonedx1.4+json --debug > bom.json
 
 
