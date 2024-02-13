@@ -135,7 +135,7 @@ jobs:
       env:
         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
       with:
-        image: ecr_repo
+        image: employee
         
 
     # - name: Run Snyk to check Kubernetes manifest file for issues
