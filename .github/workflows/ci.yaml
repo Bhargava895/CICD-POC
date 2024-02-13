@@ -16,7 +16,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-
     # Define the steps to be executed in the job
     steps:
     # Checkout the repository to access source code
