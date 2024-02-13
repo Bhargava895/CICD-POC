@@ -66,6 +66,32 @@ jobs:
     - name: Generate SBOM report
       run:  mvn org.cyclonedx:cyclonedx-maven-plugin:makeAggregateBom
 
+    - name: Convert SBOM format to pom.xml
+      run: |
+    
+        cat target/bom.json | jq '.dependencies[]' > dependencies.txt
+
+        echo '<project>' > pom.xml
+        echo '  <modelVersion>4.0.0</modelVersion>' >> pom.xml
+        echo '  <groupId>com.example</groupId>' >> pom.xml
+        echo '  <artifactId>example-project</artifactId>' >> pom.xml
+        echo '  <version>1.0.0</version>' >> pom.xml
+        echo '  <dependencies>' >> pom.xml
+
+        while read -r line; do
+         groupId=$(echo "$line" | jq -r '.group')
+         artifactId=$(echo "$line" | jq -r '.name')
+         version=$(echo "$line" | jq -r '.version')
+         echo "    <dependency>" >> pom.xml
+         echo "      <groupId>$groupId</groupId>" >> pom.xml
+         echo "      <artifactId>$artifactId</artifactId>" >> pom.xml
+         echo "      <version>$version</version>" >> pom.xml
+         echo "    </dependency>" >> pom.xml
+        done < dependencies.txt
+
+        echo '  </dependencies>' >> pom.xml
+        echo '</project>' >> pom.xml
+        
     - name: Import SBOM and scan with Snyk
       run: |
          snyk test --file=target/bom.json --package-manager=cyclonedx --org=0e8467bb-ec01-4e11-b944-e330bfa35298
