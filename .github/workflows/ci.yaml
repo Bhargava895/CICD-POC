@@ -63,6 +63,14 @@ jobs:
     #       exit 1
     #     fi
 
+    - name: Generate SBOM report
+      run:  mvn org.cyclonedx:cyclonedx-maven-plugin:makeAggregateBom
+
+    - name: Import SBOM and scan with Snyk
+      run: |
+         snyk test --all-projects --file=pom.xml --org=0e8467bb-ec01-4e11-b944-e330bfa35298
+
+
     # # Generate code-coverage report using jacoco
     # - name : Get code-coverage report
     #   run : mvn jacoco:report
