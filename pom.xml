@@ -98,6 +98,18 @@
 					</execution>
 				</executions>
 			</plugin>
+			 <plugin>
+    <groupId>org.cyclonedx</groupId>
+    <artifactId>cyclonedx-maven-plugin</artifactId>
+    <version>INSERT_LATEST_VERSION_HERE</version>
+    <executions>
+      <execution>
+        <goals>
+          <goal>makeAggregateBom</goal>
+        </goals>
+      </execution>
+    </executions>
+  </plugin>
 
 		</plugins>
 	</build>
