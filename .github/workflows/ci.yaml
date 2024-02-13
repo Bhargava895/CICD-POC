@@ -68,7 +68,7 @@ jobs:
 
     - name: Import SBOM and scan with Snyk
       run: |
-         snyk test --file=target/bom.json --org=0e8467bb-ec01-4e11-b944-e330bfa35298
+         snyk test --file=target/bom.json --package-manager=cyclonedx --org=0e8467bb-ec01-4e11-b944-e330bfa35298
 
 
     # # Generate code-coverage report using jacoco
