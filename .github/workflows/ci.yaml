@@ -44,9 +44,9 @@ jobs:
     - name: Authenticate with Snyk
       run: snyk auth ${{ secrets.SNYK_TOKEN }}
 
-    #  # Snyk Code scan
-    # - name: Snyk Code scan
-    #   run: snyk code test
+     # Snyk Code scan
+    - name: Snyk Code scan
+      run: snyk code test
 
     # Snyk Open Source 
     # - name: Snyk dependency scan
