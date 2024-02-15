@@ -62,9 +62,9 @@ jobs:
     #       exit 1
     #     fi
 
-    - name: Generate SBOM report with Snyk
-      run: snyk sbom --file=pom.xml --format=spdx2.3+json
-      # run: snyk sbom --format=cyclonedx1.4+json --debug > bom.json
+    # - name: Generate SBOM report with Snyk
+    #   run: snyk sbom --file=pom.xml --format=spdx2.3+json
+    #   # run: snyk sbom --format=cyclonedx1.4+json --debug > bom.json
 
 
     # # Generate code-coverage report using jacoco
@@ -134,7 +134,9 @@ jobs:
     - name: push docker image
       run:  |
        docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.ECR_REPO_NAME }}:latest
-    
+
+    - name: Snyk Monitor
+      run: snyk monitor
 
     # - name: Run Snyk to check Kubernetes manifest file for issues
     #   uses: snyk/actions/iac@master
