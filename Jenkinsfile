@@ -15,15 +15,68 @@ pipeline {
                     // Set up JDK 17
                     tool 'java'
                     tool 'maven'
-
-                    // Run unit tests using maven goal
-                    sh 'mvn install'
-
-                    // Build Docker image
-                    sh 'docker build -t myapp .'
+              }
+            }
+          }
+        stage('Run Unit Test Cases') {
+            steps {
+                script {
+                    sh "mvn test"
+                }
+             }
+          }
+        stage('Generate Code Coverage Report') {
+            steps {
+                script {
+                    // Generate code-coverage report using Jacoco
+                    sh 'mvn jacoco:report'
+                }
+            }
+            post {
+                always {
+                    // Upload code-coverage report as an artifact
+                    archiveArtifacts artifacts: 'target/site/jacoco/index.html', onlyIfSuccessful: true
                 }
             }
         }
+        stage('Build project and package jar') {
+            steps {
+                script {
+                    // This command builds the Maven project and packages it into a JAR
+                    sh 'mvn package'
+                }
+            }
+
+            post {
+                success {
+                    // This block is executed if the build is successful
+                    echo 'Build successful!'
+                }
+
+                failure {
+                    // This block is executed if the build fails
+                    echo 'Build failed!'
+                }
+            }
+        }
+       stage('Build Image') {
+            steps {
+                script {
+                    // Retrieve the commit SHA from the Jenkins environment
+                    def shortCommitSha = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
+        
+                    // Build the image with the commit SHA as the tag
+                    sh "docker build -t employeemangement:${shortCommitSha} ."  
+                }
+            }
+        }
+        
+                    // // Run unit tests using maven goal
+                    // sh 'mvn install'
+
+                    // // Build Docker image
+                    // sh 'docker build -t myapp .'
+                
 
          stage('Snyk Scan') {
             steps {
