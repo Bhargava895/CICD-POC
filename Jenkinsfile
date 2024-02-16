@@ -18,6 +18,7 @@ pipeline {
               }
             }
           }
+        
         stage('Run Unit Test Cases') {
             steps {
                 script {
@@ -25,6 +26,7 @@ pipeline {
                 }
              }
           }
+        
         stage('Generate Code Coverage Report') {
             steps {
                 script {
@@ -39,6 +41,7 @@ pipeline {
                 }
             }
         }
+        
         stage('Build project and package jar') {
             steps {
                 script {
@@ -59,6 +62,7 @@ pipeline {
                 }
             }
         }
+        
        stage('Build Image') {
             steps {
                 script {
@@ -71,26 +75,41 @@ pipeline {
             }
         }
         
-                    // // Run unit tests using maven goal
-                    // sh 'mvn install'
-
-                    // // Build Docker image
-                    // sh 'docker build -t myapp .'
-                
-
-         stage('Snyk Scan') {
-            steps {
-                withCredentials([string(credentialsId: 'snyk-token-id', variable: 'SNYK_TOKEN')]) {
-                    sh "snyk auth $SNYK_TOKEN" // Authenticate with Snyk using the stored token
-                    // sh "snyk code test" // Run Snyk test for vulnerabilities in source code
-                   // sh "snyk test --all-projects --maven" //Run snyk test for vulnerabilites in pom.xml
-                    
-                    // sh 'snyk test myapp' // Run Snyk test for vulnerabilities on the Docker image
-                    sh "snyk iac test ./manifests/*.yaml"
-
-                }
+      stage('Snyk Code Test') {
+        steps {
+            withCredentials([string(credentialsId: 'snyk-token-id', variable: 'SNYK_TOKEN')]) {
+                sh "snyk auth $SNYK_TOKEN"
+                sh "snyk code test"
             }
-        }
+         }
+      }
+    
+    stage('Snyk Maven Test') {
+        steps {
+            withCredentials([string(credentialsId: 'snyk-token-id', variable: 'SNYK_TOKEN')]) {
+                sh "snyk auth $SNYK_TOKEN"
+                sh "snyk test --all-projects --maven"
+            }
+         }
+      }
+      
+    stage('Snyk Docker Image Scan') {
+        steps {
+            withCredentials([string(credentialsId: 'snyk-token-id', variable: 'SNYK_TOKEN')]) {
+                sh "snyk auth $SNYK_TOKEN"
+                sh "snyk test myapp"
+            }
+         }
+      }
+    
+    stage('Snyk Manifest Scan') {
+        steps {
+            withCredentials([string(credentialsId: 'snyk-token-id', variable: 'SNYK_TOKEN')]) {
+                sh "snyk auth $SNYK_TOKEN"
+                sh "snyk iac test ./manifests/*.yaml"
+             }
+         }
+      }
 
     
         // stage('Scan') {
