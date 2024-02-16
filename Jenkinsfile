@@ -36,7 +36,6 @@ pipeline {
                     // sh 'snyk test myapp' // Run Snyk test for vulnerabilities on the Docker image
                     sh "snyk iac test ./manifests/*.yaml"
 
-
                 }
             }
         }
