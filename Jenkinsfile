@@ -3,6 +3,11 @@ pipeline {
 
     environment {
      SNYK_TOKEN = credentials('snyk-token-id')
+     AWS_ACCESS_KEY_ID     = credentials('AWS_ACCESS_KEY_ID')
+     AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
+     AWS_REGION            = 'us-east-1'
+     ecrRegistryUrl = credentials('ECR_REGISTRY_URL')
+
     }
     
     stages {
@@ -62,6 +67,15 @@ pipeline {
                 }
             }
         }
+
+       stage('AWS Configuration') {
+            steps {
+                // Optional: Explicitly run aws configure with environment variables
+                sh "aws configure set aws_access_key_id ${AWS_ACCESS_KEY_ID}"
+                sh "aws configure set aws_secret_access_key ${AWS_SECRET_ACCESS_KEY}"
+                sh "aws configure set default.region ${AWS_REGION}"
+            }
+        }
         
        stage('Build Image') {
             steps {
@@ -101,8 +115,43 @@ pipeline {
             }
          }
       }
+        
+     stage('AWS Configuration') {
+            steps {
+                // Optional: Explicitly run aws configure with environment variables
+                sh "aws configure set aws_access_key_id ${AWS_ACCESS_KEY_ID}"
+                sh "aws configure set aws_secret_access_key ${AWS_SECRET_ACCESS_KEY}"
+                sh "aws configure set default.region ${AWS_REGION}"
+            }
+        }
+ stage('ECR Login') {
+            steps {
+                script {
+                    // Use the retrieved URL for ECR login
+                    sh "aws ecr get-login-password | docker login --username AWS --password-stdin ${ecrRegistryUrl}"
+                }
+            }
+        }
+
+        
+
+        stage('Push Image to ECR') {
+            steps {
+                script {
+                    // Retrieve the commit SHA from the Jenkins environment
+                    def shortCommitSha = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
+        
+                    // Tag the image with the ECR repository name
+                    sh "docker tag humanresource:${shortCommitSha} ${ecrRegistryUrl}:${shortCommitSha}"  // Replace with your ECR repository name
+                    
+                    // Push the image to ECR
+                    sh "docker push ${ecrRegistryUrl}:${shortCommitSha}"
+                }
+            }
+        }
+
     
-    stage('Snyk Manifest Scan') {
+     stage('Snyk Manifest Scan') {
         steps {
             withCredentials([string(credentialsId: 'snyk-token-id', variable: 'SNYK_TOKEN')]) {
                 sh "snyk auth $SNYK_TOKEN"
