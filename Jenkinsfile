@@ -25,7 +25,6 @@ pipeline {
             }
         }
 
-
          stage('Snyk Scan') {
             steps {
                 withCredentials([string(credentialsId: 'snyk-token-id', variable: 'SNYK_TOKEN')]) {
