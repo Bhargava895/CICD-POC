@@ -66,6 +66,13 @@ jobs:
       run: snyk sbom --file=pom.xml --format=spdx2.3+json
       # run: snyk sbom --format=cyclonedx1.4+json --debug > bom.json
 
+     # Upload SBOM report as an artifact
+    - name: Upload SBOM report
+      uses: actions/upload-artifact@v3
+      with:
+        name: SBOM Report
+        path: snyk-sbom.spdx.json
+
     # # Generate code-coverage report using jacoco
     # - name : Get code-coverage report
     #   run : mvn jacoco:report
