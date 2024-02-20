@@ -96,7 +96,6 @@ jobs:
     # Once we build the package using maven as build tool the artifact generated is in jar format and store under target directory
     - name: Build project and package jar
       run: mvn package
-
       
     # # Build trust between GitHub and AWS using OIDC connector
     # - name: configure aws credentials
