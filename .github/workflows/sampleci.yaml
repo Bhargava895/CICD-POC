@@ -1,0 +1,23 @@
+# Define the CI/CD Workflow for Java code
+name: CI-CD Workflow for java code 
+
+# Trigger the workflow on pushes to the specified branch
+on:
+  push:
+      
+jobs:
+  # CI job
+  build:
+    runs-on: ubuntu-latest
+
+    # Define the steps to be executed in the job
+    steps:
+    # Checkout the repository to access source code
+    - name: Checkout code
+      uses: actions/checkout@v3
+      
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+       distribution: 'temurin'
+       java-version: '17'
