@@ -1,0 +1,24 @@
+on:
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  chatgptComment:
+    runs-on: ubuntu-latest
+    name: Add Comment
+    steps:
+      - name: Add Comment 
+        uses: PublicisSapient/devops-chatgpt-comment-pull-request@main
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          open-api-key: ${{ secrets.CHATGPT_API_KEY }}
+          max-prompt-tokens: '10000'
+          ignore-paths: '.github/*, src/, package*.json, .env*'
+          model: 'gpt-4-turbo'
+          temperature: 1
+          max-response-tokens: 512
+          top_p: 1
+          frequency-penalty: 0
+          presence-penalty: 1
