@@ -49,3 +49,5 @@ jobs:
           file: Dockerfile
           push: true
           tags: bhargava895/githubactions:latest
+
+          
